@@ -58,3 +58,39 @@ CREATE TABLE Users(
     group_id bigint REFERENCES TeachingGroups(id),
     user_role VARCHAR(50) CHECK (user_role IN ('student', 'teacher', 'admin'))
 );
+CREATE TABLE Enrollments(
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id bigint REFERENCES Users(id),
+    program_id bigint REFERENCES  Programs(id),
+    sub_status VARCHAR(50) CHECK (sub_status IN ('active', 'pending', 'cancelled', 'completed')),
+    created_at date,
+    updated_at date
+);
+CREATE TABLE Payments(
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    sub_id bigint,
+    pay_sum int,
+    pay_status VARCHAR(50) CHECK (pay_status IN ('pending', 'paid', 'failed', 'refunded')),
+    pay_date date,
+    created_at date,
+    updated_at date
+);
+CREATE TABLE ProgramCompletions(
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id bigint REFERENCES Users(id),
+    program_id bigint REFERENCES Programs(id),
+    complete_status VARCHAR(50) CHECK (complete_status IN ('active', 'completed', 'pending', 'cancelled')),
+    program_beginning date,
+    program_end date,
+    created_at date,
+    updated_at date
+);
+CREATE TABLE Certificates(
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    user_id bigint REFERENCES Users(id),
+    program_id bigint REFERENCES Programs(id),
+    url VARCHAR(100),
+    certificate_date date,
+    created_at date,
+    updated_at date
+);
