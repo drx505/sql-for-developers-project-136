@@ -110,3 +110,19 @@ CREATE TABLE Exercises(
     created_at date,
     updated_at date
 );
+CREATE TABLE Discussions(
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id bigint REFERENCES Lessons(id),
+    discuss_txt text,
+    created_at date,
+    updated_at date
+);
+CREATE TABLE Blog(
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    student_id bigint REFERENCES Users(id),
+    article_title VARCHAR(50),
+    article_txt text,
+    article_status VARCHAR(50),
+    created_at date,
+    updated_at date
+);
