@@ -94,3 +94,19 @@ CREATE TABLE Certificates(
     created_at date,
     updated_at date
 );
+CREATE TABLE Quizzes(
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id bigint,
+    test_title VARCHAR(50),
+    content text,
+    created_at date,
+    updated_at date
+);
+CREATE TABLE Exercises(
+    id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    lesson_id bigint,
+    exercise_title VARCHAR(50),
+    url VARCHAR(100),
+    created_at date,
+    updated_at date
+);
