@@ -8,40 +8,40 @@ CREATE TABLE Courses(
 );
 CREATE TABLE Lessons(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    course_id bigint REFERENCES Courses(id),
     title VARCHAR(50),
     content text,
-    video_link VARCHAR(150),
-    posit int,
+    video_url VARCHAR(150),
+    position int,
     created_at date,
     updated_at date,
-    course_link VARCHAR(150),
-    course_id bigint REFERENCES Courses(id),
-    is_deleted bool
+    deleted_at date
 );
 CREATE TABLE Modules(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(50),
     description text,
     created_at date,
-    updated_at date
+    updated_at date,
+    deleted_at date
 );
 CREATE TABLE Programs(
      id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-     title VARCHAR(50),
+     name VARCHAR(50),
      price int,
      program_type VARCHAR(50),
      created_at date,
      updated_at date
 );
-CREATE TABLE CoursesOfModules(
+CREATE TABLE Course_Modules(
     course_id bigint REFERENCES Courses(id),
     module_id bigint REFERENCES Modules(id)
 );
-CREATE TABLE ModulesOfPrograms(
+CREATE TABLE Programs_Modules(
     module_id bigint REFERENCES Modules(id),
     program_id bigint REFERENCES Programs(id)
 );
-CREATE TABLE TeachingGroups(
+CREATE TABLE Teaching_Groups(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     slug VARCHAR(50) UNIQUE,
     created_at date,
@@ -49,33 +49,34 @@ CREATE TABLE TeachingGroups(
 );
 CREATE TABLE Users(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    username VARCHAR(50),
+    name VARCHAR(50),
     email VARCHAR(50),
-    password VARCHAR(50) UNIQUE,
-    group_link VARCHAR(100),
+    password_hash VARCHAR(50) UNIQUE,
+    teaching_group_id VARCHAR(100),
     created_at date,
     updated_at date,
     group_id bigint REFERENCES TeachingGroups(id),
-    user_role VARCHAR(50) CHECK (user_role IN ('student', 'teacher', 'admin'))
+    role VARCHAR(50) CHECK (user_role IN ('student', 'teacher', 'admin')),
+    deleted_at date
 );
 CREATE TABLE Enrollments(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id bigint REFERENCES Users(id),
     program_id bigint REFERENCES  Programs(id),
-    sub_status VARCHAR(50) CHECK (sub_status IN ('active', 'pending', 'cancelled', 'completed')),
+    status VARCHAR(50) CHECK (sub_status IN ('active', 'pending', 'cancelled', 'completed')),
     created_at date,
     updated_at date
 );
 CREATE TABLE Payments(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    sub_id bigint,
-    pay_sum int,
-    pay_status VARCHAR(50) CHECK (pay_status IN ('pending', 'paid', 'failed', 'refunded')),
-    pay_date date,
+    enrollment_id bigint,
+    amount int,
+    status VARCHAR(50) CHECK (pay_status IN ('pending', 'paid', 'failed', 'refunded')),
+    paid_at date,
     created_at date,
     updated_at date
 );
-CREATE TABLE ProgramCompletions(
+CREATE TABLE Program_Completions(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id bigint REFERENCES Users(id),
     program_id bigint REFERENCES Programs(id),
@@ -90,14 +91,14 @@ CREATE TABLE Certificates(
     user_id bigint REFERENCES Users(id),
     program_id bigint REFERENCES Programs(id),
     url VARCHAR(100),
-    certificate_date date,
+    issued_at date,
     created_at date,
     updated_at date
 );
 CREATE TABLE Quizzes(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id bigint,
-    test_title VARCHAR(50),
+    title VARCHAR(50),
     content text,
     created_at date,
     updated_at date
@@ -105,7 +106,7 @@ CREATE TABLE Quizzes(
 CREATE TABLE Exercises(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id bigint,
-    exercise_title VARCHAR(50),
+    name VARCHAR(50),
     url VARCHAR(100),
     created_at date,
     updated_at date
@@ -113,11 +114,12 @@ CREATE TABLE Exercises(
 CREATE TABLE Discussions(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id bigint REFERENCES Lessons(id),
-    discuss_txt text,
+    user_id bigint REFERENCES Users(id),
+    text text,
     created_at date,
     updated_at date
 );
-CREATE TABLE Blog(
+CREATE TABLE Blogs(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     student_id bigint REFERENCES Users(id),
     article_title VARCHAR(50),
