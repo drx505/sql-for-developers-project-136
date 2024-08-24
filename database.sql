@@ -1,4 +1,4 @@
-CREATE TABLE Courses(
+CREATE TABLE courses(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(50),
     description text,
@@ -6,9 +6,9 @@ CREATE TABLE Courses(
     updated_at date,
     is_deleted bool
 );
-CREATE TABLE Lessons(
+CREATE TABLE lessons(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    course_id bigint REFERENCES Courses(id),
+    course_id bigint REFERENCES courses(id),
     title VARCHAR(50),
     content text,
     video_url VARCHAR(150),
@@ -17,7 +17,7 @@ CREATE TABLE Lessons(
     updated_at date,
     deleted_at date
 );
-CREATE TABLE Modules(
+CREATE TABLE modules(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(50),
     description text,
@@ -25,7 +25,7 @@ CREATE TABLE Modules(
     updated_at date,
     deleted_at date
 );
-CREATE TABLE Programs(
+CREATE TABLE programs(
      id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
      name VARCHAR(50),
      price int,
@@ -33,21 +33,21 @@ CREATE TABLE Programs(
      created_at date,
      updated_at date
 );
-CREATE TABLE Course_Modules(
-    course_id bigint REFERENCES Courses(id),
-    module_id bigint REFERENCES Modules(id)
+CREATE TABLE course_modules(
+    course_id bigint REFERENCES courses(id),
+    module_id bigint REFERENCES modules(id)
 );
-CREATE TABLE Programs_Modules(
-    module_id bigint REFERENCES Modules(id),
-    program_id bigint REFERENCES Programs(id)
+CREATE TABLE programs_modules(
+    module_id bigint REFERENCES modules(id),
+    program_id bigint REFERENCES programs(id)
 );
-CREATE TABLE Teaching_Groups(
+CREATE TABLE teaching_groups(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     slug VARCHAR(50) UNIQUE,
     created_at date,
     updated_at date
 );
-CREATE TABLE Users(
+CREATE TABLE users(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(50),
     email VARCHAR(50),
@@ -55,47 +55,47 @@ CREATE TABLE Users(
     teaching_group_id VARCHAR(100),
     created_at date,
     updated_at date,
-    group_id bigint REFERENCES TeachingGroups(id),
-    role VARCHAR(50) CHECK (user_role IN ('student', 'teacher', 'admin')),
+    group_id bigint REFERENCES teaching_groups(id),
+    role VARCHAR(50) CHECK (role IN ('student', 'teacher', 'admin')),
     deleted_at date
 );
-CREATE TABLE Enrollments(
+CREATE TABLE enrollments(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_id bigint REFERENCES Users(id),
-    program_id bigint REFERENCES  Programs(id),
-    status VARCHAR(50) CHECK (sub_status IN ('active', 'pending', 'cancelled', 'completed')),
+    user_id bigint REFERENCES users(id),
+    program_id bigint REFERENCES programs(id),
+    status VARCHAR(50) CHECK (status IN ('active', 'pending', 'cancelled', 'completed')),
     created_at date,
     updated_at date
 );
-CREATE TABLE Payments(
+CREATE TABLE payments(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     enrollment_id bigint,
     amount int,
-    status VARCHAR(50) CHECK (pay_status IN ('pending', 'paid', 'failed', 'refunded')),
+    status VARCHAR(50) CHECK (status IN ('pending', 'paid', 'failed', 'refunded')),
     paid_at date,
     created_at date,
     updated_at date
 );
-CREATE TABLE Program_Completions(
+CREATE TABLE program_completions(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_id bigint REFERENCES Users(id),
-    program_id bigint REFERENCES Programs(id),
+    user_id bigint REFERENCES users(id),
+    program_id bigint REFERENCES programs(id),
     complete_status VARCHAR(50) CHECK (complete_status IN ('active', 'completed', 'pending', 'cancelled')),
     program_beginning date,
     program_end date,
     created_at date,
     updated_at date
 );
-CREATE TABLE Certificates(
+CREATE TABLE certificates(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_id bigint REFERENCES Users(id),
-    program_id bigint REFERENCES Programs(id),
+    user_id bigint REFERENCES users(id),
+    program_id bigint REFERENCES programs(id),
     url VARCHAR(100),
     issued_at date,
     created_at date,
     updated_at date
 );
-CREATE TABLE Quizzes(
+CREATE TABLE quizzes(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id bigint,
     title VARCHAR(50),
@@ -103,7 +103,7 @@ CREATE TABLE Quizzes(
     created_at date,
     updated_at date
 );
-CREATE TABLE Exercises(
+CREATE TABLE exercises(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id bigint,
     name VARCHAR(50),
@@ -111,17 +111,17 @@ CREATE TABLE Exercises(
     created_at date,
     updated_at date
 );
-CREATE TABLE Discussions(
+CREATE TABLE discussions(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    lesson_id bigint REFERENCES Lessons(id),
-    user_id bigint REFERENCES Users(id),
+    lesson_id bigint REFERENCES lessons(id),
+    user_id bigint REFERENCES users(id),
     text text,
     created_at date,
     updated_at date
 );
-CREATE TABLE Blogs(
+CREATE TABLE blogs(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    student_id bigint REFERENCES Users(id),
+    student_id bigint REFERENCES users(id),
     article_title VARCHAR(50),
     article_txt text,
     article_status VARCHAR(50) CHECK (article_status IN ('created', 'in moderation', 'published', 'archived')),
