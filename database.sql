@@ -34,14 +34,14 @@ CREATE TABLE programs(
      updated_at date
 );
 CREATE TABLE course_modules(
-    id bigint PRIMARY KEY (course_id, module_id),
     course_id bigint REFERENCES courses(id),
-    module_id bigint REFERENCES modules(id)
+    module_id bigint REFERENCES modules(id),
+    PRIMARY KEY (course_id, module_id)
 );
 CREATE TABLE programs_modules(
-    id bigint PRIMARY KEY (program_id, module_id),
     module_id bigint REFERENCES modules(id),
-    program_id bigint REFERENCES programs(id)
+    program_id bigint REFERENCES programs(id),
+    PRIMARY KEY (program_id, module_id)
 );
 CREATE TABLE teaching_groups(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
