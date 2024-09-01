@@ -123,7 +123,7 @@ CREATE TABLE discussions(
 CREATE TABLE blogs(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id bigint REFERENCES users(id),
-    title VARCHAR(50),
+    name VARCHAR(50),
     content text,
     status VARCHAR(50) CHECK (status IN ('created', 'in moderation', 'published', 'archived')),
     created_at date,
