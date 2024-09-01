@@ -4,7 +4,7 @@ CREATE TABLE courses(
     description text,
     created_at date,
     updated_at date,
-    deleted_at bool
+    deleted_at date
 );
 CREATE TABLE lessons(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
