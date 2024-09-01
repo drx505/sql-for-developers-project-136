@@ -125,7 +125,7 @@ CREATE TABLE blogs(
     user_id bigint REFERENCES users(id),
     title VARCHAR(50),
     content text,
-    status VARCHAR(50) CHECK (article_status IN ('created', 'in moderation', 'published', 'archived')),
+    status VARCHAR(50) CHECK (status IN ('created', 'in moderation', 'published', 'archived')),
     created_at date,
     updated_at date
 );
