@@ -4,7 +4,7 @@ CREATE TABLE courses(
     description text,
     created_at date,
     updated_at date,
-    is_deleted bool
+    deleted_at bool
 );
 CREATE TABLE lessons(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -38,7 +38,7 @@ CREATE TABLE course_modules(
     module_id bigint REFERENCES modules(id),
     PRIMARY KEY (course_id, module_id)
 );
-CREATE TABLE programs_modules(
+CREATE TABLE program_modules(
     module_id bigint REFERENCES modules(id),
     program_id bigint REFERENCES programs(id),
     PRIMARY KEY (program_id, module_id)
@@ -54,10 +54,9 @@ CREATE TABLE users(
     name VARCHAR(50),
     email VARCHAR(50),
     password_hash VARCHAR(50) UNIQUE,
-    teaching_group_id VARCHAR(100),
+    teaching_group_id bigint REFERENCES teaching_groups(id),
     created_at date,
     updated_at date,
-    group_id bigint REFERENCES teaching_groups(id),
     role VARCHAR(50) CHECK (role IN ('student', 'teacher', 'admin')),
     deleted_at date
 );
@@ -82,9 +81,9 @@ CREATE TABLE program_completions(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     user_id bigint REFERENCES users(id),
     program_id bigint REFERENCES programs(id),
-    complete_status VARCHAR(50) CHECK (complete_status IN ('active', 'completed', 'pending', 'cancelled')),
-    program_beginning date,
-    program_end date,
+    status VARCHAR(50) CHECK (status IN ('active', 'completed', 'pending', 'cancelled')),
+    started_at date,
+    completed_at date,
     created_at date,
     updated_at date
 );
@@ -123,10 +122,10 @@ CREATE TABLE discussions(
 );
 CREATE TABLE blogs(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    student_id bigint REFERENCES users(id),
-    article_title VARCHAR(50),
-    article_txt text,
-    article_status VARCHAR(50) CHECK (article_status IN ('created', 'in moderation', 'published', 'archived')),
+    user_id bigint REFERENCES users(id),
+    title VARCHAR(50),
+    content text,
+    status VARCHAR(50) CHECK (article_status IN ('created', 'in moderation', 'published', 'archived')),
     created_at date,
     updated_at date
 );
