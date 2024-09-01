@@ -70,7 +70,7 @@ CREATE TABLE enrollments(
 );
 CREATE TABLE payments(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    enrollment_id bigint REFERENCES enrollments(id) UNIQUE,
+    enrollment_id bigint REFERENCES enrollments(id),
     amount int,
     status VARCHAR(50) CHECK (status IN ('pending', 'paid', 'failed', 'refunded')),
     paid_at date,
