@@ -57,7 +57,7 @@ CREATE TABLE users(
     teaching_group_id bigint REFERENCES teaching_groups(id),
     created_at date,
     updated_at date,
-    role VARCHAR(50) CHECK (role IN ('student', 'teacher', 'admin')),
+    role VARCHAR(50) CHECK (role IN ('Student', 'Teacher', 'Admin')),
     deleted_at date
 );
 CREATE TABLE enrollments(
