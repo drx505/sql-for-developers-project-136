@@ -1,6 +1,6 @@
 CREATE TABLE courses(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    title VARCHAR(50),
+    name VARCHAR(50),
     description text,
     created_at date,
     updated_at date,
@@ -9,7 +9,7 @@ CREATE TABLE courses(
 CREATE TABLE lessons(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     course_id bigint REFERENCES courses(id),
-    title VARCHAR(50),
+    name VARCHAR(50),
     content text,
     video_url VARCHAR(150),
     position int,
@@ -19,7 +19,7 @@ CREATE TABLE lessons(
 );
 CREATE TABLE modules(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    title VARCHAR(50),
+    name VARCHAR(50),
     description text,
     created_at date,
     updated_at date,
@@ -99,7 +99,7 @@ CREATE TABLE certificates(
 CREATE TABLE quizzes(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     lesson_id bigint,
-    title VARCHAR(50),
+    name VARCHAR(50),
     content text,
     created_at date,
     updated_at date
