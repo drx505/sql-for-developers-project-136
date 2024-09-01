@@ -98,7 +98,7 @@ CREATE TABLE certificates(
 );
 CREATE TABLE quizzes(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    lesson_id bigint,
+    lesson_id bigint REFERENCES lessons(id),
     name VARCHAR(50),
     content text,
     created_at date,
@@ -106,7 +106,7 @@ CREATE TABLE quizzes(
 );
 CREATE TABLE exercises(
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    lesson_id bigint,
+    lesson_id bigint REFERENCES lessons(id),
     name VARCHAR(50),
     url VARCHAR(100),
     created_at date,
